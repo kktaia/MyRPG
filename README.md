@@ -1,0 +1,2 @@
+# MyRPG
+DXRubyでRPGを作る
