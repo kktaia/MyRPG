@@ -1,14 +1,11 @@
 ﻿require 'dxruby'
-require_relative 'Chara'
-require_relative 'Map'
+require_relative 'Control'
 
-
-pl = Player.new
-map = Map.new
+cont = Control.new
 
 Window.loop do
 
-  Sprite.update([pl, map])
+  cont.update
 
   break if Input.key_push?(K_ESCAPE)
 end

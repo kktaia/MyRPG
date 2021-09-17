@@ -1,4 +1,5 @@
 ﻿require_relative 'define'
+require_relative 'Map'
 WALKTIME = 15
 
 class Player < Sprite
@@ -7,7 +8,7 @@ class Player < Sprite
   IMAGES = Image.load_tiles('Image/Player.png', 3, 4)
 
   def initialize
-    super(0, 0, IMAGES[0])
+    super
     @walk_vec = 2
     @walk_flag = false
     @anim_count = 0
@@ -28,22 +29,22 @@ class Player < Sprite
     draw
   end
 
-  def move
+  def move(map)
     self.walk_flag = false
     if target_x == x && target_y == y
       if Input.x + Input.y != 0
         self.walk_flag = true
         self.walk_vec = if Input.y > 0
-                          self.target_y += CELL_HEIGHT
+                          self.target_y += CELL_HEIGHT if map.cell[:can_walk][x/CELL_WIDTH][y/CELL_HEIGHT + 1]
                           2
                         elsif Input.x < 0
-                          self.target_x -= CELL_WIDTH
+                          self.target_x -= CELL_WIDTH if map.cell[:can_walk][x/CELL_WIDTH - 1][y/CELL_HEIGHT]
                           4
                         elsif Input.x > 0
-                          self.target_x += CELL_WIDTH
+                          self.target_x += CELL_WIDTH if map.cell[:can_walk][x/CELL_WIDTH + 1][y/CELL_HEIGHT]
                           6
                         elsif Input.y < 0
-                          self.target_y -= CELL_HEIGHT
+                          self.target_y -= CELL_HEIGHT if map.cell[:can_walk][x/CELL_WIDTH][y/CELL_HEIGHT - 1]
                           8
                         end
       else
@@ -88,15 +89,15 @@ class Player < Sprite
     end
   end
 
-  def update
-    move
+  def update(map)
+    move(map)
     view
   end
 
   def draw
-    self.y -= height / 2
+    self.y -= 2 * (height - width)
     super
-    self.y += height / 2
+    self.y += 2 * (height - width)
   end
 
 end

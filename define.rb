@@ -13,8 +13,10 @@ class Sprite
   alias init_origin initialize
 
   def initialize(x = 0, y = 0, image = nil)
-    init_origin
+    init_origin(x, y, image)
     @width = image.width if !image.nil?
     @height = image.height if !image.nil?
+    self.x *= CELL_WIDTH
+    self.y *= CELL_HEIGHT
   end
 end
