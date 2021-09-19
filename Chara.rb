@@ -8,13 +8,14 @@ class Player < Sprite
   IMAGES = Image.load_tiles('Image/Player.png', 3, 4)
 
   def initialize
-    super
+    super(0, 0, IMAGES[0])
     @walk_vec = 2
     @walk_flag = false
     @anim_count = 0
     @target_x = x
     @target_y = y
     @speed = 1
+    self.scale_y = (CELL_HEIGHT + 2 * (height - width)) / height.to_f
   end
 
   def animation_view(anim_state, first_num)
@@ -35,16 +36,16 @@ class Player < Sprite
       if Input.x + Input.y != 0
         self.walk_flag = true
         self.walk_vec = if Input.y > 0
-                          self.target_y += CELL_HEIGHT if map.cell[:can_walk][x/CELL_WIDTH][y/CELL_HEIGHT + 1]
+                          self.target_y += CELL_HEIGHT if map.all?{|_m| _m.cell[:can_walk][y / CELL_HEIGHT + 1][x / CELL_WIDTH] }
                           2
                         elsif Input.x < 0
-                          self.target_x -= CELL_WIDTH if map.cell[:can_walk][x/CELL_WIDTH - 1][y/CELL_HEIGHT]
+                          self.target_x -= CELL_WIDTH if map.all?{|_m| _m.cell[:can_walk][y / CELL_HEIGHT][x / CELL_WIDTH - 1] }
                           4
                         elsif Input.x > 0
-                          self.target_x += CELL_WIDTH if map.cell[:can_walk][x/CELL_WIDTH + 1][y/CELL_HEIGHT]
+                          self.target_x += CELL_WIDTH if map.all?{|_m| _m.cell[:can_walk][y / CELL_HEIGHT][x / CELL_WIDTH + 1] }
                           6
                         elsif Input.y < 0
-                          self.target_y -= CELL_HEIGHT if map.cell[:can_walk][x/CELL_WIDTH][y/CELL_HEIGHT - 1]
+                          self.target_y -= CELL_HEIGHT if map.all?{|_m| _m.cell[:can_walk][y / CELL_HEIGHT - 1][x / CELL_WIDTH] }
                           8
                         end
       else
@@ -92,6 +93,22 @@ class Player < Sprite
   def update(map)
     move(map)
     view
+
+    Window.ox = if x <= Window.width / 2
+                  0
+                elsif x >= map[0].width - Window.width / 2
+                  map[0].width - Window.width
+                else
+                  x - Window.width / 2
+                end
+
+    Window.oy = if y <= Window.height / 2
+                  0
+                elsif y >= map[0].height - Window.height / 2
+                  map[0].height - Window.height
+                else
+                  y - Window.height / 2
+                end
   end
 
   def draw

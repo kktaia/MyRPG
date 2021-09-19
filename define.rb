@@ -18,5 +18,15 @@ class Sprite
     @height = image.height if !image.nil?
     self.x *= CELL_WIDTH
     self.y *= CELL_HEIGHT
+    self.scale_x = CELL_WIDTH / width.to_f
+    self.scale_y = CELL_HEIGHT / height.to_f
+    self.center_x = 0
+    self.center_y = 0
+  end
+end
+
+module Window
+  def self.draw_extend(x1, y1, x2, y2, image, option = {})
+    draw_morph(x1, y1, x2, y1, x2, y2, x1, y2, image, option)
   end
 end
