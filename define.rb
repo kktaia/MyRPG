@@ -4,9 +4,13 @@ CELL_WIDTH = 40
 CELL_HEIGHT = 40
 CELL_NUM_X = 21
 CELL_NUM_Y = 17
+CELL_NUM_WX = 100
+CELL_NUM_WY = 100
 Window.width = 720
 Window.height = 480
 WALKTIME = 15
+$state = :NONE
+$location = :TOWN
 
 class Sprite
   attr_accessor :width, :height
@@ -16,8 +20,6 @@ class Sprite
     init_origin(x, y, image)
     @width = image.width if !image.nil?
     @height = image.height if !image.nil?
-    self.x *= CELL_WIDTH
-    self.y *= CELL_HEIGHT
     self.scale_x = CELL_WIDTH / width.to_f
     self.scale_y = CELL_HEIGHT / height.to_f
     self.center_x = 0

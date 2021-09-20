@@ -15,23 +15,31 @@ class Waku
         @live = false
     end
 
+    def x
+        @x + Window.ox
+    end
+
+    def y
+        @y + Window.oy
+    end
+
     def view
-        _x = self.x + Window.ox
-        _y = self.y + Window.oy
-        Window.draw_extend(_x, _y, _x + 6, _y + 6, IMAGES[0])
-        Window.draw_extend(_x + 6, _y, _x + width - 6, _y + 6, IMAGES[1])
-        Window.draw_extend(_x + width - 6, _y, _x + width, _y + 6, IMAGES[2])
-        Window.draw_extend(_x, _y + 6, _x + 6, _y + height - 6, IMAGES[3])
-        Window.draw_extend(_x + 6, _y + 6, _x + width - 6, _y + height - 6, IMAGES[4])
-        Window.draw_extend(_x + width - 6, _y + 6, _x + width, _y + height - 6, IMAGES[5])
-        Window.draw_extend(_x, _y + height - 6, _x + 6, _y + height, IMAGES[6])
-        Window.draw_extend(_x + 6, _y + height - 6, _x + width - 6, _y + height, IMAGES[7])
-        Window.draw_extend(_x + width - 6, _y + height - 6, _x + width, _y + height, IMAGES[8])
+        #_x = self.x + Window.ox
+        #_y = self.y + Window.oy
+        Window.draw_extend(x, y, x + 6, y + 6, IMAGES[0])
+        Window.draw_extend(x + 6, y, x + width - 6, y + 6, IMAGES[1])
+        Window.draw_extend(x + width - 6, y, x + width, y + 6, IMAGES[2])
+        Window.draw_extend(x, y + 6, x + 6, y + height - 6, IMAGES[3])
+        Window.draw_extend(x + 6, y + 6, x + width - 6, y + height - 6, IMAGES[4])
+        Window.draw_extend(x + width - 6, y + 6, x + width, y + height - 6, IMAGES[5])
+        Window.draw_extend(x, y + height - 6, x + 6, y + height, IMAGES[6])
+        Window.draw_extend(x + 6, y + height - 6, x + width - 6, y + height, IMAGES[7])
+        Window.draw_extend(x + width - 6, y + height - 6, x + width, y + height, IMAGES[8])
     end
 end
 
 class MessageWindow < Waku
-    attr_accessor :txt, :page, :line
+    attr_accessor :txt, :page, :line, :reset_flag
 
     FONT = Font.new(20)
 
@@ -39,6 +47,7 @@ class MessageWindow < Waku
         super(0, 360, Window.width, 120)
         @txt = []
         @page = @line = 0
+        @reset_flag = false
         File.open(add) do |f|
             f2 = f.read.split(";\n")
             f2.each do |p|
@@ -50,12 +59,18 @@ class MessageWindow < Waku
     def reset
         self.live = true
         self.page = self.line = 0
+        $state = :MESSAGE
+        self.reset_flag = true
     end
 
     def read
         txt[page].each_with_index do |l, i|
             Window.draw_font(x + 10, y + 10 + FONT.size * i, l, FONT, color:C_WHITE)
             break if line == i
+        end
+        if reset_flag
+            self.reset_flag = false
+            return
         end
         if Input.key_push?(K_SPACE)
             if txt[page][line + 1] && line < 3
@@ -66,6 +81,7 @@ class MessageWindow < Waku
             end
             if !txt[page]
                 self.live = false
+                $state = :NONE
             end
         end
     end

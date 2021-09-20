@@ -5,23 +5,46 @@ require_relative 'Chara'
 require_relative 'WindowBox'
 
 class Control
-  attr_accessor :pl, :map, :msg
+  attr_accessor :p_party, :map, :e_map, :w_map, :mode
 
   def initialize
-    @pl = Player.new
+    @w_map = WorldMap.new('world_map.bmp')
     @map = [
       Map.new('csv/flame1.csv'),
       Map.new('csv/flame2.csv'),
       Map.new('csv/flame3.csv')
     ]
-    @msg = MessageWindow.new('txt/立札.txt')
-    msg.reset
-    pl.x = pl.target_x = CELL_WIDTH
-    pl.y = pl.target_y = CELL_HEIGHT
+    @e_map = EventMap.new('csv/event.csv')
+    @p_party = Party.new(e_map, map)
+    @mode = :game
+  end
+
+  def view
+    case $location
+    when :WORLD
+      w_map.view
+      p_party.view
+    when :TOWN
+      Sprite.update(map)
+      p_party.view
+      ev.update(map)
+    end
+  end
+
+  def game
+    case $state
+    when :NONE
+      view
+      p_party.move
+      p_party.erace(1) if Input.key_push?(K_Q)
+    when :MESSAGE
+      view
+    end
+    ev.update(map)
+    Sprite.update(map)
   end
 
   def update
-    pl.update(map)
-    Sprite.update([map, msg])
+    send(mode)
   end
 end
