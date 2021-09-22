@@ -73,7 +73,7 @@ class MessageWindow < Waku
             return
         end
         if Input.key_push?(K_SPACE)
-            if txt[page][line + 1] && line < 3
+            if txt[page][line + 1] && line < txt[page].size
                 self.line += 1
             else
                 self.line = 0

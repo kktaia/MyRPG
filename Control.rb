@@ -27,7 +27,7 @@ class Control
     when :TOWN
       Sprite.update(map)
       p_party.view
-      ev.update(map)
+      e_map.update(map)
     end
   end
 
@@ -40,7 +40,7 @@ class Control
     when :MESSAGE
       view
     end
-    ev.update(map)
+    e_map.update(map)
     Sprite.update(map)
   end
 
