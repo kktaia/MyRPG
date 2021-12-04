@@ -1,4 +1,4 @@
-﻿hoge,X,Y,EventType,Address1,Address2
-,3,5,メッセージ,txt/立札.txt,
-,3,2,村人,Image/Murabito.png,txt/村人A.txt
-,8,16,マップチェンジ,1,
+﻿hoge,X,Y,EventType,Element1,Element2
+hoge,3,5,メッセージ,txt/立札.txt,
+hoge,3,2,村人,Image/Murabito.png,txt/村人A.txt
+hoge,8,16,マップチェンジ,1,

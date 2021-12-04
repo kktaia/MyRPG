@@ -10,9 +10,11 @@ class Event
         @y = hash[:Y]
         case hash[:EventType]
         when "メッセージ"
-            @event = MessageWindow.new(hash[:Address1])
+            @event = MessageWindow.new(hash[:Element1])
         when "村人"
-            @event = Villager.new(hash[:X], hash[:Y], hash[:Address1], hash[:Address2])
+            @event = Villager.new(hash[:X], hash[:Y], hash[:Element1], hash[:Element2])
+        when "マップチェンジ"
+            @event=ChangeMap.new(hash[:X], hash[:Y], hash[:Element1])
         end
     end
     def activate(walk_vec)

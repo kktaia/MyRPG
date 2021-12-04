@@ -237,10 +237,10 @@ class Party
     @map = _map
     @party = []
     insert(0, Player.new('Image/Player.png'))
-    insert(1, Player.new('Image/PartyMember1.png'))
-    insert(2, Player.new('Image/PartyMember2.png'))
-    insert(3, Player.new('Image/PartyMember3.png'))
-    insert(4, Player.new('Image/PartyMember4.png'))
+    #insert(1, Player.new('Image/PartyMember1.png'))
+    #insert(2, Player.new('Image/PartyMember2.png'))
+    #insert(3, Player.new('Image/PartyMember3.png'))
+    #insert(4, Player.new('Image/PartyMember4.png'))
   end
 
   def insert(num, addition)

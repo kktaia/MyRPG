@@ -107,4 +107,12 @@ end
 
 class ChangeMap
   DATA = CSV.read('csv/change_map.csv', headers: :first_row, converters: :integer)
+  attr_accessor :x,:y,:index
+
+
+  def initialize(_x,_y,_index)
+    @x=_x
+    @y=_y
+    @index=_index
+  end
 end
